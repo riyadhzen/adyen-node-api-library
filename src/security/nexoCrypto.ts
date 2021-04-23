@@ -45,8 +45,7 @@ class NexoCrypto {
         const saleToPoiMessageByteArray = Buffer.from(saleToPoiMessageJson, "ascii");
         const ivNonce = NexoCrypto.generateRandomIvNonce();
         const encryptedSaleToPoiMessage = NexoCrypto.crypt(saleToPoiMessageByteArray, derivedKey, ivNonce, Modes.ENCRYPT);
-        const encryptedSaleToPoiMessageHmac = NexoCrypto.hmac(saleToPoiMessageByteArray, derivedKey);
-
+        const encryptedSaleToPoiMessageHmac = NexoCrypto.hmac(encryptedSaleToPoiMessage, derivedKey);
         const securityTrailer: SecurityTrailer = {
             adyenCryptoVersion: securityKey.adyenCryptoVersion,
             hmac: encryptedSaleToPoiMessageHmac.toString("base64"),
@@ -68,12 +67,12 @@ class NexoCrypto {
         const encryptedSaleToPoiMessageByteArray = Buffer.from(saleToPoiSecureMessage.nexoBlob, "base64");
         const derivedKey = NexoDerivedKeyGenerator.deriveKeyMaterial(securityKey.passphrase);
         const ivNonce = Buffer.from(saleToPoiSecureMessage.securityTrailer.nonce, "base64");
-        const decryptedSaleToPoiMessageByteArray =
-            NexoCrypto.crypt(encryptedSaleToPoiMessageByteArray, derivedKey, ivNonce, Modes.DECRYPT);
 
         const receivedHmac = Buffer.from(saleToPoiSecureMessage.securityTrailer.hmac, "base64");
-        this.validateHmac(receivedHmac, decryptedSaleToPoiMessageByteArray, derivedKey);
+        this.validateHmac(receivedHmac, encryptedSaleToPoiMessageByteArray, derivedKey);
 
+        const decryptedSaleToPoiMessageByteArray =
+            NexoCrypto.crypt(encryptedSaleToPoiMessageByteArray, derivedKey, ivNonce, Modes.DECRYPT);
         return decryptedSaleToPoiMessageByteArray.toString("ascii");
     }
 
