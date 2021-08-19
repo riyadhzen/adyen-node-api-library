@@ -19,17 +19,17 @@
 
 import nock from "nock";
 import { createMock } from "ts-auto-mock";
-import { createBasicAuthClient } from "../__mocks__/base";
-import { documentContent } from "../__mocks__/platforms/documentContent";
-import { Client, Platforms } from "../index";
+import { createBasicAuthClient } from "../../__mocks__/base";
+import { documentContent } from "../../__mocks__/platforms/documentContent";
+import { Client, Platforms } from "../../index";
 
-import * as A from  "../typings/platformsAccount/models";
+import * as A from "../../typings/platformsAccount/models";
 import F = IPlatformsFund;
 import N = IPlatformsNotificationConfiguration;
 import H = IPlatformsHostedOnboardingPage;
 import AccountHolderDetails = A.AccountHolderDetails;
 import NotificationConfigurationDetails = N.NotificationConfigurationDetails;
-import HttpClientException from "../httpClient/httpClientException";
+import HttpClientException from "../../httpClient/httpClientException";
 
 let client: Client;
 let platforms: Platforms;

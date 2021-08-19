@@ -19,9 +19,8 @@ jobs:
     - name: npm install, npm test:coverage
       run: |
         npm install
-        npm run test:coverage
+        npm run test:unit:coverage
       env:
-        CI: true
         ADYEN_API_KEY: ${{ secrets.ADYEN_API_KEY }}
         ADYEN_MERCHANT: ${{ secrets.ADYEN_MERCHANT }}
         ADYEN_PASSWORD: ${{ secrets.ADYEN_PASSWORD }}

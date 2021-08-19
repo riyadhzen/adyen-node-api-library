@@ -18,12 +18,12 @@
  */
 
 import nock from "nock";
-import { createClient, createTerminalAPIPaymentRequest, createTerminalAPIRefundRequest } from "../__mocks__/base";
-import { asyncRes } from "../__mocks__/terminalApi/async";
-import { syncRefund, syncRes } from "../__mocks__/terminalApi/sync";
-import Client from "../client";
-import TerminalCloudAPI from "../services/terminalCloudAPI";
-import { TerminalApiResponse } from "../typings/terminal/models";
+import { createClient, createTerminalAPIPaymentRequest, createTerminalAPIRefundRequest } from "../../__mocks__/base";
+import { asyncRes } from "../../__mocks__/terminalApi/async";
+import { syncRefund, syncRes } from "../../__mocks__/terminalApi/sync";
+import Client from "../../client";
+import TerminalCloudAPI from "../../services/terminalCloudAPI";
+import { TerminalApiResponse } from "../../typings/terminal/models";
 
 let client: Client;
 let terminalCloudAPI: TerminalCloudAPI;
@@ -44,10 +44,8 @@ afterEach((): void => {
     nock.cleanAll();
 });
 
-const isCI = process.env.CI === "true" || (typeof process.env.CI === "boolean" && process.env.CI);
 describe("Terminal Cloud API", (): void => {
-    test.each([isCI, true])("should make an async payment request, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should make an async payment request", async (): Promise<void> => {
         scope.post("/async").reply(200, asyncRes);
 
         const terminalAPIPaymentRequest = createTerminalAPIPaymentRequest();
@@ -57,8 +55,7 @@ describe("Terminal Cloud API", (): void => {
         expect(requestResponse).toEqual("ok");
     });
 
-    test.each([isCI, true])("should make a sync payment request, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should make a sync payment request", async (): Promise<void> => {
         scope.post("/sync").reply(200, syncRes);
 
         const terminalAPIPaymentRequest = createTerminalAPIPaymentRequest();
@@ -68,8 +65,7 @@ describe("Terminal Cloud API", (): void => {
         expect(terminalAPIResponse.SaleToPOIResponse?.MessageHeader).toBeDefined();
     });
 
-    test.each([isCI, true])("should make an async refund request, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should make an async refund request", async (): Promise<void> => {
         scope.post("/sync").reply(200, syncRes);
 
         const terminalAPIPaymentRequest = createTerminalAPIPaymentRequest();

@@ -19,7 +19,7 @@
 
 /* eslint-disable @typescript-eslint/camelcase */
 
-import checkServerIdentity from "../helpers/checkServerIdentity";
+import checkServerIdentity from "../../helpers/checkServerIdentity";
 import { PeerCertificate } from "tls";
 
 const createMockedCertificate = (CN: string): PeerCertificate => ({

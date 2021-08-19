@@ -17,29 +17,20 @@
  * See the LICENSE file for more info.
  */
 
-import nock from "nock";
-import { createClient } from "../__mocks__/base";
-import Payout from "../services/payout";
-import Client from "../client";
+import { createClient } from "../../__mocks__/base";
+import Payout from "../../services/payout";
+import Client from "../../client";
 import StoreDetailRequest = IPayouts.StoreDetailRequest;
-import { ApiConstants } from "../constants/apiConstants";
-
-const isCI = process.env.CI === "true" || (typeof process.env.CI === "boolean" && process.env.CI);
-const storeDetailAndSubmitThirdParty = JSON.stringify({
-    additionalData: {
-        fraudResultType: "GREEN",
-        fraudManualReview: "false",
-    },
-    pspReference: "8515131751004933",
-    resultCode: "[payout-submit-received]"
-});
-
-const storeDetail = JSON.stringify({
-    pspReference: "8515136787207087",
-    recurringDetailReference: "8415088571022720",
-    resultCode: "Success"
-});
-
+import { ApiConstants } from "../../constants/apiConstants";
+import StoreDetailAndSubmitResponse = IPayouts.StoreDetailAndSubmitResponse;
+import StoreDetailAndSubmitRequest = IPayouts.StoreDetailAndSubmitRequest;
+import ModifyRequest = IPayouts.ModifyRequest;
+import ModifyResponse = IPayouts.ModifyResponse;
+import SubmitResponse = IPayouts.SubmitResponse;
+import SubmitRequest = IPayouts.SubmitRequest;
+import StoreDetailResponse = IPayouts.StoreDetailResponse;
+import PayoutResponse = IPayouts.PayoutResponse;
+import PayoutRequest = IPayouts.PayoutRequest;
 
 const amountAndReference = {
     amount: {
@@ -103,39 +94,26 @@ let client: Client;
 let clientStore: Client;
 let clientReview: Client;
 let payout: Payout;
-let scope: nock.Scope;
 
 beforeEach((): void => {
-    if (!nock.isActive()) {
-        nock.activate();
-    }
-    client = createClient();
+    client = createClient(process.env.ADYEN_API_KEY);
     clientStore = createClient(process.env.ADYEN_STOREPAYOUT_APIKEY);
     clientReview = createClient(process.env.ADYEN_REVIEWPAYOUT_APIKEY);
-    scope = nock(`${client.config.endpoint}/pal/servlet/Payout/${Client.API_VERSION}`);
     payout = new Payout(client);
 });
 
-afterEach((): void => {
-    nock.cleanAll();
-});
-
-describe("PayoutTest", function (): void {
-    test.each([isCI, true])("should succeed on store detail and submit third party, isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+describe.skip("PayoutTest", function (): void {
+    test("should succeed on store detail and submit third party", async function (): Promise<void> {
         payout = new Payout(clientStore);
-        const request: IPayouts.StoreDetailAndSubmitRequest = mockStoreDetailAndSubmitRequest();
-        scope.post("/storeDetailAndSubmitThirdParty").reply(200, storeDetailAndSubmitThirdParty);
+        const request: StoreDetailAndSubmitRequest = mockStoreDetailAndSubmitRequest();
 
-        const result = await payout.storeDetailAndSubmitThirdParty(request);
+        const result: StoreDetailAndSubmitResponse = await payout.storeDetailAndSubmitThirdParty(request);
         expect(result.resultCode).toEqual("[payout-submit-received]");
         expect(result.pspReference).toBeTruthy();
     });
 
-    test.each([false, true])("should succeed on store detail, isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test.each([false, true])("should succeed on store detail", async function (): Promise<void> {
         payout = new Payout(clientStore);
-        scope.post("/storeDetail").reply(200, storeDetail);
         const request: StoreDetailRequest = mockStoreDetailRequest();
         const result = await payout.storeDetail(request);
 
@@ -144,37 +122,28 @@ describe("PayoutTest", function (): void {
         expect(result.recurringDetailReference).toBeTruthy();
     });
 
-    test.each([isCI, true])("should succeed on confirm third party, isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test("should succeed on confirm third party", async function (): Promise<void> {
         payout = new Payout(clientStore);
-        scope.post("/storeDetail").reply(200, storeDetail);
         const storeRequest: StoreDetailRequest = mockStoreDetailRequest();
-        const storeResult = await payout.storeDetail(storeRequest);
+        const storeResult: StoreDetailAndSubmitResponse = await payout.storeDetail(storeRequest);
 
         payout = new Payout(clientReview);
-        scope.post("/confirmThirdParty")
-            .reply(200, {
-                pspReference: "8815131762537886",
-                response: "[payout-confirm-received]"
-            });
 
-        const request: IPayouts.ModifyRequest = {
+        const request: ModifyRequest = {
             merchantAccount: process.env.ADYEN_MERCHANT!,
             originalReference: storeResult.pspReference
         };
-        const result = await payout.confirmThirdParty(request);
+        const result: ModifyResponse = await payout.confirmThirdParty(request);
 
         expect(result.response).toEqual("[payout-confirm-received]");
         expect(result.pspReference).toBeTruthy();
     });
 
-    test.each([isCI, true])("should succeed on submit third party, isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test("should succeed on submit third party", async function (): Promise<void> {
         payout = new Payout(clientStore);
-        scope.post("/submitThirdParty").reply(200, storeDetailAndSubmitThirdParty);
 
-        const request: IPayouts.SubmitRequest = mockSubmitRequest();
-        const result = await payout.submitThirdparty(request);
+        const request: SubmitRequest = mockSubmitRequest();
+        const result: SubmitResponse = await payout.submitThirdparty(request);
 
         expect(result.resultCode).toEqual("[payout-submit-received]");
         expect(result.pspReference).toBeTruthy();
@@ -185,38 +154,25 @@ describe("PayoutTest", function (): void {
         }
     });
 
-    test.each([false, true])("should succeed on decline third party, isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test("should succeed on decline third party", async function (): Promise<void> {
         payout = new Payout(clientStore);
-        scope.post("/storeDetail").reply(200, storeDetail);
         const storeRequest: StoreDetailRequest = mockStoreDetailRequest();
-        const storeResult = await payout.storeDetail(storeRequest);
+        const storeResult: StoreDetailResponse = await payout.storeDetail(storeRequest);
 
         payout = new Payout(clientReview);
         const request: IPayouts.ModifyRequest = {
             merchantAccount: process.env.ADYEN_MERCHANT!,
             originalReference: storeResult.pspReference
         };
-        scope.post("/declineThirdParty")
-            .reply(200, {
-                pspReference: "8815131762537886",
-                response: "[payout-decline-received]"
-            });
-        const result = await payout.declineThirdParty(request);
+        const result: ModifyResponse = await payout.declineThirdParty(request);
 
         expect(result.response).toEqual("[payout-decline-received]");
         expect(result.pspReference).toBeTruthy();
     });
 
-    test.each([isCI, true])("should succeed on payout, isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
-        scope.post("/payout").reply(200, {
-            pspReference: "8815131762537886",
-            resultCode: "Received",
-        });
-
-        const request = mockPayoutRequest();
-        const result = await payout.payout(request);
+    test("should succeed on payout", async function (): Promise<void> {
+        const request: PayoutRequest = mockPayoutRequest();
+        const result: PayoutResponse = await payout.payout(request);
 
         expect(result.resultCode).toEqual("Received");
         expect(result.pspReference).toBeTruthy();

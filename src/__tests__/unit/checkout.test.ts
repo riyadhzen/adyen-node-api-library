@@ -18,17 +18,17 @@
  */
 
 import nock from "nock";
-import {createClient} from "../__mocks__/base";
-import {paymentMethodsSuccess} from "../__mocks__/checkout/paymentMethodsSuccess";
-import {paymentsSuccess} from "../__mocks__/checkout/paymentsSuccess";
-import {paymentDetailsSuccess} from "../__mocks__/checkout/paymentsDetailsSuccess";
-import {paymentSessionSuccess} from "../__mocks__/checkout/paymentSessionSucess";
-import {originKeysSuccess} from "../__mocks__/checkout/originkeysSuccess";
-import {paymentsResultMultibancoSuccess} from "../__mocks__/checkout/paymentsResultMultibancoSuccess";
-import {paymentsResultSuccess} from "../__mocks__/checkout/paymentsResultSucess";
-import Client from "../client";
-import Checkout from "../services/checkout";
-import HttpClientException from "../httpClient/httpClientException";
+import {createClient} from "../../__mocks__/base";
+import {paymentMethodsSuccess} from "../../__mocks__/checkout/paymentMethodsSuccess";
+import {paymentsSuccess} from "../../__mocks__/checkout/paymentsSuccess";
+import {paymentDetailsSuccess} from "../../__mocks__/checkout/paymentsDetailsSuccess";
+import {paymentSessionSuccess} from "../../__mocks__/checkout/paymentSessionSucess";
+import {originKeysSuccess} from "../../__mocks__/checkout/originkeysSuccess";
+import {paymentsResultMultibancoSuccess} from "../../__mocks__/checkout/paymentsResultMultibancoSuccess";
+import {paymentsResultSuccess} from "../../__mocks__/checkout/paymentsResultSucess";
+import Client from "../../client";
+import Checkout from "../../services/checkout";
+import HttpClientException from "../../httpClient/httpClientException";
 import {
     Amount,
     CardDetails,
@@ -46,11 +46,10 @@ import {
     PaymentResponse,
     PaymentSetupRequest,
     PaymentVerificationRequest,
-} from "../typings/checkout/models";
+} from "../../typings/checkout/models";
 
 const merchantAccount = process.env.ADYEN_MERCHANT!;
 const reference = "Your order number";
-const isCI = process.env.CI === "true" || (typeof process.env.CI === "boolean" && process.env.CI);
 
 function createAmountObject(currency: string, value: number): Amount {
     return {
@@ -159,8 +158,7 @@ afterEach(() => {
 });
 
 describe("Checkout", (): void => {
-    test.each([false, true])("should make a payment. isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should make a payment. isMock: %p", async (): Promise<void> => {
         scope.post("/payments")
             .reply(200, paymentsSuccess);
 
@@ -169,8 +167,7 @@ describe("Checkout", (): void => {
         expect(paymentsResponse.pspReference).toBeTruthy();
     });
 
-    test.each([false, true])("should return correct Exception, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should return correct Exception", async (): Promise<void> => {
         try {
             scope.post("/payments")
                 .reply(401);
@@ -182,8 +179,7 @@ describe("Checkout", (): void => {
         }
     });
 
-    test.each([false, true])("should have valid payment methods, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have valid payment methods", async (): Promise<void> => {
         const paymentMethodsRequest: PaymentMethodsRequest = {merchantAccount: "MagentoMerchantTest"};
 
         scope.post("/paymentMethods")
@@ -197,8 +193,7 @@ describe("Checkout", (): void => {
         }
     });
 
-    test.each([false, true])("should have valid payment link, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have valid payment link", async (): Promise<void> => {
         const expiresAt = "2019-12-17T10:05:29Z";
         const paymentLinkSuccess: PaymentLinkResource = getPaymentLinkSuccess(expiresAt);
 
@@ -208,8 +203,7 @@ describe("Checkout", (): void => {
         expect(paymentSuccessLinkResponse).toBeTruthy();
     });
 
-    test.each([isCI, true])("should get payment link, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should get payment link", async (): Promise<void> => {
         const expiresAt = "2019-12-17T10:05:29Z";
         const paymentLinkSuccess: PaymentLinkResource = getPaymentLinkSuccess(expiresAt);
 
@@ -222,8 +216,7 @@ describe("Checkout", (): void => {
         expect(paymentLink).toBeTruthy();
     });
 
-    test.each([isCI, true])("should patch payment link, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should patch payment link", async (): Promise<void> => {
         const expiresAt = "2019-12-17T10:05:29Z";
         const paymentLinkSuccess: PaymentLinkResource = getPaymentLinkSuccess(expiresAt);
 
@@ -236,8 +229,7 @@ describe("Checkout", (): void => {
         expect(paymentLink.status).toEqual("expired");
     });
 
-    test.each([isCI, true])("should have payment details, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have payment details", async (): Promise<void> => {
         scope.post("/payments/details")
             .reply(200, paymentDetailsSuccess);
 
@@ -245,8 +237,7 @@ describe("Checkout", (): void => {
         expect(paymentsResponse.resultCode).toEqual("Authorised");
     });
 
-    test.each([false, true])("should have payment session success, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have payment session success", async (): Promise<void> => {
         scope.post("/paymentSession")
             .reply(200, paymentSessionSuccess);
         const paymentSessionRequest: PaymentSetupRequest = createPaymentSessionRequest();
@@ -254,8 +245,7 @@ describe("Checkout", (): void => {
         expect(paymentSessionResponse.paymentSession).not.toBeUndefined();
     });
 
-    test.each([isCI, true])("should have payments result, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have payments result", async (): Promise<void> => {
         scope.post("/payments/result")
             .reply(200, paymentsResultSuccess);
         const paymentResultRequest: PaymentVerificationRequest = {
@@ -265,8 +255,7 @@ describe("Checkout", (): void => {
         expect(paymentResultResponse.resultCode).toEqual("Authorised");
     });
 
-    test.each([false, true])("should have missing identifier on live, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have missing identifier on live", async (): Promise<void> => {
         client.setEnvironment("LIVE");
         try {
             new Checkout(client);
@@ -277,8 +266,7 @@ describe("Checkout", (): void => {
     });
 
 
-    test.each([false, true])("should succeed on multibanco payment, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should succeed on multibanco payment", async (): Promise<void> => {
         scope.post("/payments")
             .reply(200, paymentsResultMultibancoSuccess);
 
@@ -289,8 +277,7 @@ describe("Checkout", (): void => {
         expect(paymentsResponse.additionalData).toBeTruthy();
     });
 
-    test.each([false, true])("should get origin keys. isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should get origin keys. isMock: %p", async (): Promise<void> => {
         const checkoutUtility = new Checkout(client);
         const originKeysRequest: CheckoutUtilityRequest = {
             originDomains: ["https://www.your-domain.com"],
@@ -308,8 +295,7 @@ describe("Checkout", (): void => {
     });
 
     // TODO: add gift card to PaymentMethod and unmock test
-    test.each([true, true])("should get payment methods balance", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should get payment methods balance", async (): Promise<void> => {
         const paymentMethodsRequest: CheckoutBalanceCheckRequest = {
             merchantAccount,
             amount: createAmountObject("USD", 1000),
@@ -328,8 +314,7 @@ describe("Checkout", (): void => {
         expect(paymentsResponse.balance.value).toEqual(1000);
     });
 
-    test.each([false, true])("should create order", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should create order", async (): Promise<void> => {
         const expiresAt = "2019-12-17T10:05:29Z";
         const orderRequest: CheckoutCreateOrderRequest = {
             amount: createAmountObject("USD", 1000),
@@ -350,8 +335,7 @@ describe("Checkout", (): void => {
         expect(response).toBeTruthy();
     });
 
-    test.each([false, true])("should cancel order", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should cancel order", async (): Promise<void> => {
         const expiresAt = "2019-12-17T10:05:29Z";
         const orderRequest: CheckoutCreateOrderRequest = {
             amount: createAmountObject("USD", 1000),

@@ -17,10 +17,10 @@
  * See the LICENSE file for more info.
  */
 import nock from "nock";
-import { createClient } from "../__mocks__/base";
-import BinLookup from "../services/binLookup";
-import Client from "../client";
-import HttpClientException from "../httpClient/httpClientException";
+import { createClient } from "../../__mocks__/base";
+import BinLookup from "../../services/binLookup";
+import Client from "../../client";
+import HttpClientException from "../../httpClient/httpClientException";
 
 const threeDSAvailabilitySuccess = {
     binDetails: {
@@ -49,8 +49,7 @@ afterEach((): void => {
 });
 
 describe("Bin Lookup", function (): void {
-    test.each([false, true])("should succeed on get 3ds availability. isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test("should succeed on get 3ds availability", async function (): Promise<void> {
         const threeDSAvailabilityRequest: IBinLookup.ThreeDSAvailabilityRequest = {
             merchantAccount: process.env.ADYEN_MERCHANT!,
             brands: ["randomBrand"],
@@ -65,8 +64,7 @@ describe("Bin Lookup", function (): void {
         expect(response).toEqual<IBinLookup.ThreeDSAvailabilityResponse>(threeDSAvailabilitySuccess);
     });
 
-    test.each([false, true])("should fail with invalid merchant. isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test("should fail with invalid merchant.", async function (): Promise<void> {
         const threeDSAvailabilityRequest: { [key: string]: undefined|string|[] } = {
             merchantAccount: undefined,
             cardNumber: "4111111111111",
@@ -84,8 +82,7 @@ describe("Bin Lookup", function (): void {
         }
     });
 
-    test.each([false, true])("should succeed on get cost estimate. isMock: %p", async function (isMock): Promise<void> {
-        !isMock && nock.restore();
+    test("should succeed on get cost estimate.", async function (): Promise<void> {
         const expected = {
             costEstimateAmount: {
                 currency: "EUR",

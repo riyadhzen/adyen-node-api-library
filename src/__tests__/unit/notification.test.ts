@@ -17,13 +17,13 @@
  * See the LICENSE file for more info.
  */
 
-import authorisationTrue from "../__mocks__/notification/authorisationTrue.json";
-import captureTrue from "../__mocks__/notification/captureTrue.json";
-import captureFalse from "../__mocks__/notification/captureFalse.json";
-import refundTrue from "../__mocks__/notification/refundTrue.json";
-import refundFalse from "../__mocks__/notification/refundFalse.json";
-import NotificationRequest from "../notification/notificationRequest";
-import { Notification, NotificationRequestItem } from "../typings/notification/models";
+import authorisationTrue from "../../__mocks__/notification/authorisationTrue.json";
+import captureTrue from "../../__mocks__/notification/captureTrue.json";
+import captureFalse from "../../__mocks__/notification/captureFalse.json";
+import refundTrue from "../../__mocks__/notification/refundTrue.json";
+import refundFalse from "../../__mocks__/notification/refundFalse.json";
+import NotificationRequest from "../../notification/notificationRequest";
+import { Notification, NotificationRequestItem } from "../../typings/notification/models";
 
 import NotificationEnum = NotificationRequestItem.EventCodeEnum;
 import SuccessEnum = NotificationRequestItem.SuccessEnum;

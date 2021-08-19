@@ -35,7 +35,7 @@ import {
     TransactionIdentification
 } from "../typings/terminal/models";
 
-export const createClient = (apiKey = process.env.ADYEN_API_KEY): Client => {
+export const createClient = (apiKey = "mocked_api_key"): Client => {
     const config: Config = new Config();
     config.terminalApiCloudEndpoint = Client.TERMINAL_API_ENDPOINT_TEST;
     config.terminalApiLocalEndpoint = "https://mocked_local_endpoint.com";

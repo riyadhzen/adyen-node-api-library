@@ -17,10 +17,10 @@
  * See the LICENSE file for more info.
  */
 
-import HmacValidator from "../utils/hmacValidator";
-import { AdditionalData, NotificationItem, NotificationRequestItem } from "../typings/notification/models";
-import { ApiConstants } from "../constants/apiConstants";
-import NotificationRequest from "../notification/notificationRequest";
+import HmacValidator from "../../utils/hmacValidator";
+import { AdditionalData, NotificationItem, NotificationRequestItem } from "../../typings/notification/models";
+import { ApiConstants } from "../../constants/apiConstants";
+import NotificationRequest from "../../notification/notificationRequest";
 
 const key = "DFB1EB5485895CFA84146406857104ABB4CBCABDC8AAF103A624C8F6A3EAAB00";
 const expectedSign = "ZNBPtI+oDyyRrLyD1XirkKnQgIAlFc07Vj27TeHsDRE=";

@@ -28,7 +28,7 @@ module.exports = {
     ],
     setupFiles: ["<rootDir>config.ts", "dotenv/config"],
     testMatch: [
-        "**/src/__tests__/**/*.spec.ts"
+        "**/src/__tests__/**/*.test.ts"
     ],
     roots: ['<rootDir>/src'],
     transform: {

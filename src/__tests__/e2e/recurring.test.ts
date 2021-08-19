@@ -17,25 +17,21 @@
  * See the LICENSE file for more info.
  */
 
-import nock from "nock";
-import { createClient } from "../__mocks__/base";
-import { disableSuccess } from "../__mocks__/recurring/disableSuccess";
-import { listRecurringDetailsSuccess } from "../__mocks__/recurring/listRecurringDetailsSuccess";
-import { notifyShopperSuccess } from "../__mocks__/recurring/notifyShopperSuccess";
-import RecurringService from "../services/recurring";
-import Client from "../client";
-import { paymentsSuccess } from "../__mocks__/checkout/paymentsSuccess";
-import { createPaymentsCheckoutRequest } from "./checkout.spec";
-import Checkout from "../services/checkout";
-import { PaymentRequest } from "../typings/checkout/models";
+import { createClient } from "../../__mocks__/base";
+import RecurringService from "../../services/recurring";
+import Client from "../../client";
+import { createPaymentsCheckoutRequest } from "./checkout.test";
+import Checkout from "../../services/checkout";
+import {PaymentRequest, PaymentResponse} from "../../typings/checkout/models";
 import {
     ScheduleAccountUpdaterRequest,
     ScheduleAccountUpdaterResult,
     DisableRequest,
     RecurringDetailsRequest,
     Recurring,
-    NotifyShopperRequest
-} from "../typings/recurring/models";
+    NotifyShopperRequest,
+    RecurringDetailsResult, NotifyShopperResult
+} from "../../typings/recurring/models";
 
 const createRecurringDetailsRequest = (): RecurringDetailsRequest => {
     return {
@@ -44,52 +40,32 @@ const createRecurringDetailsRequest = (): RecurringDetailsRequest => {
         shopperReference: "shopperReference",
     };
 };
-const isCI = process.env.CI === "true" || (typeof process.env.CI === "boolean" && process.env.CI);
 
 let client: Client;
 let recurring: RecurringService;
 let checkout: Checkout;
-let scope: nock.Scope;
 
 beforeEach((): void => {
-    if (!nock.isActive()) {
-        nock.activate();
-    }
-    client = createClient();
+
+    client = createClient(process.env.ADYEN_API_KEY);
     recurring = new RecurringService(client);
     checkout = new Checkout(client);
-    scope = nock(`${client.config.endpoint}/pal/servlet/Recurring/${Client.RECURRING_API_VERSION}`);
-});
-
-afterEach(() => {
-    nock.cleanAll();
 });
 
 describe("Recurring", (): void => {
-    test.each([false, true])("should test have recurring details list, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
-        scope.post("/listRecurringDetails")
-            .reply(200, listRecurringDetailsSuccess);
-
-        const request = createRecurringDetailsRequest();
+    test("should test have recurring details list", async (): Promise<void> => {
+        const request: RecurringDetailsRequest  = createRecurringDetailsRequest();
         try {
-            const result = await recurring.listRecurringDetails(request);
+            const result: RecurringDetailsResult = await recurring.listRecurringDetails(request);
             expect(result).toBeTruthy();
         } catch (e) {
             fail(e.message);
         }
     });
 
-    test.each([isCI, true])("should disable, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
-        scope.post("/payments")
-            .reply(200, paymentsSuccess);
-
+    test("should disable", async (): Promise<void> => {
         const paymentsRequest: PaymentRequest = createPaymentsCheckoutRequest();
-        const res = await checkout.payments(paymentsRequest);
-
-        scope.post("/disable")
-            .reply(200, disableSuccess);
+        const res: PaymentResponse = await checkout.payments(paymentsRequest);
 
         const request: DisableRequest = {
             merchantAccount: process.env.ADYEN_MERCHANT!,
@@ -105,11 +81,7 @@ describe("Recurring", (): void => {
         }
     });
 
-    test.each([isCI, true])("should send pre-debit Notification, isMock %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
-        scope.post("/notifyShopper")
-            .reply(200, notifyShopperSuccess);
-
+    test.skip("should send pre-debit Notification", async (): Promise<void> => {
         const notifyShopperRequest: NotifyShopperRequest = {
             merchantAccount: process.env.ADYEN_MERCHANT!,
             shopperReference: "shopperReference",
@@ -124,25 +96,17 @@ describe("Recurring", (): void => {
         };
 
         try {
-            const result = await recurring.notifyShopper(notifyShopperRequest);
+            const result: NotifyShopperResult = await recurring.notifyShopper(notifyShopperRequest);
             expect(result).toBeTruthy();
         } catch (e) {
+            console.log(e);
             fail(e.message);
         }
     });
 
 
     // TODO: register account for AccountUpdater and unmock test
-    test.each([true])("should schedule account updater, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
-        const scheduleAccountUpdaterSuccess: ScheduleAccountUpdaterResult = {
-            pspReference: "mocked_psp",
-            result: "SUCCESS"
-        };
-
-        scope.post("/scheduleAccountUpdater")
-            .reply(200, scheduleAccountUpdaterSuccess);
-
+    test.skip("should schedule account updater", async (): Promise<void> => {
         const request: ScheduleAccountUpdaterRequest = {
             merchantAccount: process.env.ADYEN_MERCHANT!,
             reference: "ref",
@@ -155,7 +119,7 @@ describe("Recurring", (): void => {
         };
 
         try {
-            const result = await recurring.scheduleAccountUpdater(request);
+            const result: ScheduleAccountUpdaterResult = await recurring.scheduleAccountUpdater(request);
             expect(result).toBeTruthy();
         } catch (e) {
             fail(e.message);
