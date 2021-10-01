@@ -20,7 +20,6 @@
 import {createClient} from "../../__mocks__/base";
 import Client from "../../client";
 import Checkout from "../../services/checkout";
-import HttpClientException from "../../httpClient/httpClientException";
 import {
     Amount,
     CardDetails,
