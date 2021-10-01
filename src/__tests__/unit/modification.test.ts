@@ -103,6 +103,7 @@ const createStandaloneCancelsResponse = (): StandalonePaymentCancelResource => {
 
 const createCapturesRequest = (): CreatePaymentCaptureRequest => {
     return {
+        reference: "reference",
         merchantAccount: process.env.ADYEN_MERCHANT!,
         amount: {
             currency: "EUR",
@@ -193,7 +194,7 @@ describe("Modification", (): void => {
         try {
             const result = await modification.amountUpdates(paymentPspReference, request);
             expect(result).toBeTruthy();
-        } catch (e) {
+        } catch (e: any) {
             fail(e.message);
         }
     });
@@ -206,7 +207,7 @@ describe("Modification", (): void => {
 
         try {
             await modification.amountUpdates(invalidPaymentPspReference, request);
-        } catch (e) {
+        } catch (e: any) {
             expect(e.statusCode).toBe(422);
             expect(e.message).toContain("Original pspReference required for this operation");
         }
@@ -219,7 +220,7 @@ describe("Modification", (): void => {
         try {
             const result = await modification.cancels(paymentPspReference, request);
             expect(result).toBeTruthy();
-        } catch (e) {
+        } catch (e: any) {
             fail(e.message);
         }
     });
@@ -231,7 +232,7 @@ describe("Modification", (): void => {
             .reply(422, invalidModificationResult);
         try {
             await modification.cancels(invalidPaymentPspReference, request);
-        } catch (e) {
+        } catch (e: any) {
             expect(e.statusCode).toBe(422);
             expect(e.message).toContain("Original pspReference required for this operation");
         }
@@ -244,7 +245,7 @@ describe("Modification", (): void => {
         try {
             const result = await modification.cancelsStandalone(request);
             expect(result).toBeTruthy();
-        } catch (e) {
+        } catch (e: any) {
             fail(e.message);
         }
     });
@@ -256,7 +257,7 @@ describe("Modification", (): void => {
         try {
             const result = await modification.captures(paymentPspReference, request);
             expect(result).toBeTruthy();
-        } catch (e) {
+        } catch (e: any) {
             fail(e.message);
         }
     });
@@ -268,7 +269,7 @@ describe("Modification", (): void => {
             .reply(422, invalidModificationResult);
         try {
             await modification.captures(invalidPaymentPspReference, request);
-        } catch (e) {
+        } catch (e: any) {
             expect(e.statusCode).toBe(422);
             expect(e.message).toContain("Original pspReference required for this operation");
         }
@@ -281,7 +282,7 @@ describe("Modification", (): void => {
         try {
             const result = await modification.refunds(paymentPspReference, request);
             expect(result).toBeTruthy();
-        } catch (e) {
+        } catch (e: any) {
             fail(e.message);
         }
     });
@@ -293,7 +294,7 @@ describe("Modification", (): void => {
             .reply(422, invalidModificationResult);
         try {
             await modification.refunds(invalidPaymentPspReference, request);
-        } catch (e) {
+        } catch (e: any) {
             expect(e.statusCode).toBe(422);
             expect(e.message).toContain("Original pspReference required for this operation");
         }
@@ -306,7 +307,7 @@ describe("Modification", (): void => {
         try {
             const result = await modification.reversals(paymentPspReference, request);
             expect(result).toBeTruthy();
-        } catch (e) {
+        } catch (e: any) {
             fail(e.message);
         }
     });
@@ -318,7 +319,7 @@ describe("Modification", (): void => {
             .reply(422, invalidModificationResult);
         try {
             await modification.reversals(invalidPaymentPspReference, request);
-        } catch (e) {
+        } catch (e: any) {
             expect(e.statusCode).toBe(422);
             expect(e.message).toContain("Original pspReference required for this operation");
         }

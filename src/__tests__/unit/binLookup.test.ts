@@ -84,6 +84,15 @@ describe("Bin Lookup", function (): void {
 
     test("should succeed on get cost estimate.", async function (): Promise<void> {
         const expected = {
+            cardBin:  {
+             bin: "",
+             fundsAvailability: "I",
+             issuingBank: "ADYEN TEST BANK",
+             issuingCountry: "NL",
+             paymentMethod: "visa",
+             payoutEligible: "Y",
+             summary: "",
+           },
             costEstimateAmount: {
                 currency: "EUR",
                 value: 10
