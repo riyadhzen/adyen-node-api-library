@@ -20,6 +20,7 @@
 import {createClient} from "../../__mocks__/base";
 import Modification from "../../services/modification";
 import Client from "../../client";
+import HttpClientException from "../../httpClient/httpClientException";
 import {
     CreatePaymentAmountUpdateRequest,
     CreatePaymentCancelRequest,
@@ -105,7 +106,7 @@ describe("Modification", (): void => {
             const result: PaymentAmountUpdateResource = await modification.amountUpdates(paymentPspReference, request);
             expect(result).toBeTruthy();
         } catch (e) {
-            fail(e.message);
+            fail(e);
         }
     });
 
@@ -115,8 +116,10 @@ describe("Modification", (): void => {
         try {
             await modification.amountUpdates(invalidPaymentPspReference, request);
         } catch (e) {
-            expect(e.statusCode).toBe(422);
-            expect(e.message).toContain("Original pspReference required for this operation");
+            if(e instanceof HttpClientException) {
+                expect(e.statusCode).toBe(422);
+                expect(e.message).toContain("Original pspReference required for this operation");
+            }
         }
     });
 
@@ -126,7 +129,7 @@ describe("Modification", (): void => {
             const result: PaymentCancelResource = await modification.cancels(paymentPspReference, request);
             expect(result).toBeTruthy();
         } catch (e) {
-            fail(e.message);
+            fail(e);
         }
     });
 
@@ -136,8 +139,10 @@ describe("Modification", (): void => {
         try {
             await modification.cancels(invalidPaymentPspReference, request);
         } catch (e) {
-            expect(e.statusCode).toBe(422);
-            expect(e.message).toContain("Original pspReference required for this operation");
+            if(e instanceof HttpClientException) {
+                expect(e.statusCode).toBe(422);
+                expect(e.message).toContain("Original pspReference required for this operation");
+            }
         }
     });
 
@@ -147,7 +152,7 @@ describe("Modification", (): void => {
             const result: StandalonePaymentCancelResource = await modification.cancelsStandalone(request);
             expect(result).toBeTruthy();
         } catch (e) {
-            fail(e.message);
+            fail(e);
         }
     });
 
@@ -157,7 +162,7 @@ describe("Modification", (): void => {
             const result: PaymentCaptureResource = await modification.captures(paymentPspReference, request);
             expect(result).toBeTruthy();
         } catch (e) {
-            fail(e.message);
+            fail(e);
         }
     });
 
@@ -167,8 +172,10 @@ describe("Modification", (): void => {
         try {
             await modification.captures(invalidPaymentPspReference, request);
         } catch (e) {
-            expect(e.statusCode).toBe(422);
-            expect(e.message).toContain("Original pspReference required for this operation");
+            if(e instanceof HttpClientException) {
+                expect(e.statusCode).toBe(422);
+                expect(e.message).toContain("Original pspReference required for this operation");
+            }
         }
     });
 
@@ -178,7 +185,7 @@ describe("Modification", (): void => {
             const result: PaymentRefundResource = await modification.refunds(paymentPspReference, request);
             expect(result).toBeTruthy();
         } catch (e) {
-            fail(e.message);
+            fail(e);
         }
     });
 
@@ -188,8 +195,10 @@ describe("Modification", (): void => {
         try {
             await modification.refunds(invalidPaymentPspReference, request);
         } catch (e) {
-            expect(e.statusCode).toBe(422);
-            expect(e.message).toContain("Original pspReference required for this operation");
+            if(e instanceof HttpClientException) {
+                expect(e.statusCode).toBe(422);
+                expect(e.message).toContain("Original pspReference required for this operation");
+            }
         }
     });
 
@@ -199,7 +208,7 @@ describe("Modification", (): void => {
             const result: PaymentReversalResource = await modification.reversals(paymentPspReference, request);
             expect(result).toBeTruthy();
         } catch (e) {
-            fail(e.message);
+            fail(e);
         }
     });
 
@@ -209,8 +218,10 @@ describe("Modification", (): void => {
         try {
             await modification.reversals(invalidPaymentPspReference, request);
         } catch (e) {
-            expect(e.statusCode).toBe(422);
-            expect(e.message).toContain("Original pspReference required for this operation");
+            if(e instanceof HttpClientException) {
+                expect(e.statusCode).toBe(422);
+                expect(e.message).toContain("Original pspReference required for this operation");
+            }
         }
     });
 });

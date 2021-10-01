@@ -244,7 +244,10 @@ describe.skip("Platforms Test E2E", function(): void {
                 try {
                     expect(accountHolder.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
             it("should get account holder", async function() {
@@ -255,7 +258,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.accountHolderDetails.email).toEqual("random_email@example.com");
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -273,7 +279,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.accountHolderDetails!.address?.country).toEqual("BE");
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -287,7 +296,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.resultCode).toEqual("Success");
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -296,7 +308,10 @@ describe.skip("Platforms Test E2E", function(): void {
                 try {
                     expect(account.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -314,7 +329,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -335,7 +353,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.documentDetails![0].filename).toEqual("IDCardFront.png");
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -347,7 +368,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.status).toEqual("Closed");
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -359,7 +383,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -369,7 +396,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     const result = await platforms.Account.unSuspendAccountHolder({ accountHolderCode: accountHolderToUnSuspend.accountHolderCode });
                     expect(result.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -383,7 +413,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -395,7 +428,10 @@ describe.skip("Platforms Test E2E", function(): void {
                     });
                     expect(result.pspReference).toBeDefined();
                 } catch (e) {
-                    assertError(e);
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
                 }
             });
 
@@ -410,9 +446,12 @@ describe.skip("Platforms Test E2E", function(): void {
                     accountHolderCode: generateRandomCode()
                 });
                 expect(result.balancePerAccount![0].detailBalance).toBeDefined();
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
         it("should retrieve a list of transaction for an account holder's accounts", async function() {
@@ -422,9 +461,12 @@ describe.skip("Platforms Test E2E", function(): void {
                     accountHolderCode: generateRandomCode()
                 });
                 expect(result.accountTransactionLists![0].transactions).toBeDefined();
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
         it("should transfer funds between two accounts", async function() {
@@ -440,9 +482,12 @@ describe.skip("Platforms Test E2E", function(): void {
                     transferCode: "SUBSCRIPTION"
                 });
                 expect(result.pspReference).toBeDefined();
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
     });
@@ -455,9 +500,12 @@ describe.skip("Platforms Test E2E", function(): void {
                 const result = await platforms.NotificationConfiguration.getNotificationConfigurationList({});
                 const resultStr = JSON.stringify(result);
                 expect(resultStr.includes("pspReference")).toBeTruthy();
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
         it("should create a Notification Configuration", async function() {
@@ -470,9 +518,12 @@ describe.skip("Platforms Test E2E", function(): void {
                     }
                 });
                 expect(result.configurationDetails.active).toBeTruthy();
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
         it("should retrieve a Notification Configuration", async function() {
@@ -483,9 +534,12 @@ describe.skip("Platforms Test E2E", function(): void {
                     notificationId: configurationID
                 });
                 expect(result.configurationDetails.notifyURL).toEqual("https://www.adyen.com/notification-handler");
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
         it("should update a Notification Configuration", async function() {
@@ -509,9 +563,12 @@ describe.skip("Platforms Test E2E", function(): void {
                 });
                 const accountHolderVerification = result.configurationDetails.eventConfigs.filter(event => event.eventType === "ACCOUNT_HOLDER_VERIFICATION")[0];
                 expect(accountHolderVerification.includeMode).toEqual("EXCLUDE");
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
         it("should delete a Notification Configuration", async function() {
@@ -521,9 +578,12 @@ describe.skip("Platforms Test E2E", function(): void {
             try {
                 const result = await platforms.NotificationConfiguration.deleteNotificationConfigurations({notificationIds});
                 expect(result.pspReference).toBeDefined();
-            } catch (e) {
-                assertError(e);
-            }
+                } catch (e) {
+                    if(e instanceof HttpClientException) {
+                        assertError(e);
+                    }
+                    fail();
+                }
         });
 
     });

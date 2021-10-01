@@ -179,8 +179,7 @@ describe("Checkout", (): void => {
         }
     });
 
-    test.each([false, true])("should have valid payment methods, isMock: %p", async (isMock): Promise<void> => {
-        !isMock && nock.restore();
+    test("should have valid payment methods, isMock: %p", async (): Promise<void> => {
         const paymentMethodsRequest: PaymentMethodsRequest = {merchantAccount};
 
         scope.post("/paymentMethods")
