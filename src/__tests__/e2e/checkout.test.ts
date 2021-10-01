@@ -62,25 +62,25 @@ function createPaymentsDetailsRequest(): DetailsRequest {
     };
 }
 
-export function createPaymentsCheckoutRequest(): PaymentRequest {
-    const paymentMethodDetails = {
-        type: CardDetails.TypeEnum.Scheme,
-        encryptedCardNumber: "adyenjs_0_1_25$kiEk6tPyuACMI86Vu6rwgXcrW2V43HOUN7i8sXJE68+lFtWAWFa3PX6uEP4JGmXVJqTOUFJx5nD4v2pEiuYYzaHDE+hcVJNlfXKFmk7PGeamcrBkDMJZDxLyZ0TmRng+SfYqyzFT9tdfHa+cSOvg5f4pXBp/r1tVMyxY4NGL463JOiLZdExikWL9YDzIIlYx524gsC0aJquXak8NzDYGoZoNFIPp7Uatfk2663uenlJoEJi4ZAs6jwP3FU0dEmW1mmk41oJSLk6QoClejgf+JAjDE1kjJXch3xknxAgnNQM58Wr72hDkOCg2gTthLGqUganzl4MIaU9e8SJp1U6izw==$FNEisrJYvJl0rnb5P3JgyUw1OdtuZiScSfF9Ns/eOIeQ4aNP2flYGgUF9qW1U7TZaBnracoZ6vQKpYns8S8ESTroWM6XzKvlql+E5R2/ou7pr8bjOnSFJdiKuuLf9l7eYwEBDxoPEydAQER6rPH1LnJGqAAQhaHMnNaQbzofMQ30OfXAAsvi3YvTVqk+V904DGoCrbNvzO5+I7ZkyH20E/l/NG6P4nH4sfkWHo/EdqgGNG+NvBgeS1F6STJND3qxn5/QV1mgqdQ0l9hts2WHIMBhV3OZo5IjJfR3akwDdrCqcNCSb2kHSMc1iVhVSmmnUee2pPduyqZiVZnq2QcEsY80ybMBzh+Ar2IJBq0v9NgAsi4ppJREqNE+GdO7RKgnBUwYKHo57IsuEV5OAkFKZuLEHyRom0FstLVakMUSt2bBfthGVpUTIEnBYZTSOf7WCJ52FCtXtwt2M8VA3ucL521ehEQQfm/gAaWkwYNPeIsYXWJOTpeEW/sBF3+yQW25ArETtRkRSVrBuDMOCSAb1wx6vYy1iRFvS2ItXBc7cPhxLTIv8eWbLiStZXvRr2wUuFrkH57l9FU/0YmtzsU3h85djMIrJz1qkgYjYVPslqERyHpNABB2Bndr9+9BuRn5IzAVRHatOKcURXRJYH1qKYYZzQnUVVLnhFlXjTBNvIeFyLfyouGHpqmChRcWhCI0XpZgWm5VXtz0au7X5XFml88Cei16ipmZOCbE2JfQysWi5w==",
-        encryptedExpiryMonth: "adyenjs_0_1_25$IudwenF/Ce4IDM9UAeZuxW18H+261YoqajI94bh9DL20bBJob+GJ64kMscPb8ZWE1KA0TYlLfe2eAkbv2Ag38ezCKkjD1+4jbyEBghebQuCymJgRU/XsI6ejx0T7KQcLPZX2w++PtHrhipPPoOaNURcms11xc/2r4XMnSC3pzZ8pMyNwENV5MfBebp3WC1CKXK8+rQq9pHhFaIH8LiKVwiLRvLINrcdK6DB1TmoYDxk7vVVofVX0Nqrk/4kv7FzNnfarklSFVbe7tKV1Uufkq1haBQuLgBXoZaxjtRAqWIhC9uDmMRB60Ab08z0lITvJrT8GKpjCNILjzc7iyQik+g==$RPi8G77HfBm2d9Hw6w1SQZHFFmg0kRzdyM0oeA3sHB0k7m5woROvfwe8kmKD8iGLR9yDT9EVgrx64D+IVBq+xpg7FOeridRtnO5yODsgeKrU/rt8PbV3/+K+bBmhoM6eT/8/mM3D7HYNAOh8hnU4jm/bRfRg4ULP57w=",
-        encryptedExpiryYear: "adyenjs_0_1_25$JYT45iRLqVLNg0IhhZPYFAYqhbGTjgUJXpcQvmMZAhO/P/SfppEYNeZHY6ks6AX7gaxZOPft9+ot0ZjGZ5cG6FP7OyX13jFmP8NNYic7++iCa77oR2P6WwBbMzAKeydHmxJMvFlmZprv6HccSZ6VV1Y2A3G8HOMJzCjY0FfKitjRlf3GbLD7c/egqI6eIKpHp0GMZRAzxF2/KVRKDg60bw3VV/ED56lG7FO9Glds+ptP5K6g3vOagZPqNyABix9lQTrPSRVW7M4Rjwswt3RW50sh0lpSIdxwjP8XU9bG43LcJVP+Nmwb9NpReTRiLxLAeKry45fHtsCFomzmy36VnQ==$6xzZJbHs6RXnqk7r4gYYoT6M6tvvtIjTnipuNFiD7Om8ykzc6rM9tOFI5BXdzV5FZI6L838hlEbEI9jNxgO3WcIjRSuoDpE48B12MmKPgpVt5jTvRwN+vmqR7a03o1d3eHzxifHyg7T4migf7L7Mibl8sSyuCypV+LTU",
-        encryptedSecurityCode: "adyenjs_0_1_25$VfRhjLp1axCsqwOo72/7dlKZZf+82iE1hovo1GepazbTdcqJkEO/g6g4j3EEKCeTv4uKL4rG7nV9fU478hq6cDBkRrBi36/MOdAg013HFkHfVOyd02u0/JgB9TpER1BJy3WNcEA4n0ZjPeKBDJQl2GtM4v90mCw7bsZhl21ZdowSnFyb/vfist+H0FHkMOQqxUUhI2ZnpMHAo7psGefKGOjVA+jioRwUBhStmmP9kCzqt+Uva3DtouqYNLZS+saZ6MmmXM6mHkvNYQi/qxVC+60qyEqmI4MtCqKt2noIptSvoMNxQqQ2pm6218sD37LlvEYk9J0hMeo1SVgqzjTz0Q==$280aJPJhw6GmPrlRJ+vTUl99EGByFGGjBG4CmcezMwV8HfgeCR6gTRrO2jigD4WzkFfmpmpICj82jz+nFbWrNlDvvkJSHuOpBXN4/ma1QgzZC8D58PZ547XtCpNgIunpkhN4kMfGLuSx3n7QoqMSVJGK3KiDeiAkBcTIxa+3OzZUwSHpjuWLpT0PYkFuI0kTv2u2GWSlkWmvEUZqniac6w1bL2EQ3k24fEbSDSkdtKcRM5BSWuhF5nwAvq27PXXzUYI51JrBzGwK3xoCa4pzB0AToUs6DeGess/YXEqg/Qh7E1FR1eS/DH1a46rEdeFW2efQXsYOkfHOnw7Zvecuw5RHM9H9PeymPvfbVd09wPnrHSl0dkcpzGbitX3dxnmBn/TycxyqnNvy8mcFqx5PYrGFB7Xem7I385p0My0mbLAZzBQCNAUZmPKlEE2IaM/yS9zn/GUlT6+xCQGFaejWkwDGNvJXGLabEgqMA8twBNlElonEwyx5umxS2FOhyvO3ZaMbhz4JPatmaXb8rLAN4Vuu+7wivNNH2HUt31vDFVMwy4gfwFhMdbipF37v10jzyxbphO8x5Ne301nRHTXC3q0Ynb1IaX4FRGJkX130VbMn7o/LoJP2c6tjEwaDf05Dpw==",
-    };
-
-    return {
-        amount: createAmountObject("USD", 1000),
-        merchantAccount,
-        paymentMethod: paymentMethodDetails,
-        reference,
-        returnUrl: "https://your-company.com/...",
-        shopperReference: "shopperReference",
-        storePaymentMethod: true
-    };
-}
+// export function createPaymentsCheckoutRequest(): PaymentRequest {
+//     const paymentMethodDetails = {
+//         type: CardDetails.TypeEnum.Scheme,
+//         encryptedCardNumber: "adyenjs_0_1_25$kiEk6tPyuACMI86Vu6rwgXcrW2V43HOUN7i8sXJE68+lFtWAWFa3PX6uEP4JGmXVJqTOUFJx5nD4v2pEiuYYzaHDE+hcVJNlfXKFmk7PGeamcrBkDMJZDxLyZ0TmRng+SfYqyzFT9tdfHa+cSOvg5f4pXBp/r1tVMyxY4NGL463JOiLZdExikWL9YDzIIlYx524gsC0aJquXak8NzDYGoZoNFIPp7Uatfk2663uenlJoEJi4ZAs6jwP3FU0dEmW1mmk41oJSLk6QoClejgf+JAjDE1kjJXch3xknxAgnNQM58Wr72hDkOCg2gTthLGqUganzl4MIaU9e8SJp1U6izw==$FNEisrJYvJl0rnb5P3JgyUw1OdtuZiScSfF9Ns/eOIeQ4aNP2flYGgUF9qW1U7TZaBnracoZ6vQKpYns8S8ESTroWM6XzKvlql+E5R2/ou7pr8bjOnSFJdiKuuLf9l7eYwEBDxoPEydAQER6rPH1LnJGqAAQhaHMnNaQbzofMQ30OfXAAsvi3YvTVqk+V904DGoCrbNvzO5+I7ZkyH20E/l/NG6P4nH4sfkWHo/EdqgGNG+NvBgeS1F6STJND3qxn5/QV1mgqdQ0l9hts2WHIMBhV3OZo5IjJfR3akwDdrCqcNCSb2kHSMc1iVhVSmmnUee2pPduyqZiVZnq2QcEsY80ybMBzh+Ar2IJBq0v9NgAsi4ppJREqNE+GdO7RKgnBUwYKHo57IsuEV5OAkFKZuLEHyRom0FstLVakMUSt2bBfthGVpUTIEnBYZTSOf7WCJ52FCtXtwt2M8VA3ucL521ehEQQfm/gAaWkwYNPeIsYXWJOTpeEW/sBF3+yQW25ArETtRkRSVrBuDMOCSAb1wx6vYy1iRFvS2ItXBc7cPhxLTIv8eWbLiStZXvRr2wUuFrkH57l9FU/0YmtzsU3h85djMIrJz1qkgYjYVPslqERyHpNABB2Bndr9+9BuRn5IzAVRHatOKcURXRJYH1qKYYZzQnUVVLnhFlXjTBNvIeFyLfyouGHpqmChRcWhCI0XpZgWm5VXtz0au7X5XFml88Cei16ipmZOCbE2JfQysWi5w==",
+//         encryptedExpiryMonth: "adyenjs_0_1_25$IudwenF/Ce4IDM9UAeZuxW18H+261YoqajI94bh9DL20bBJob+GJ64kMscPb8ZWE1KA0TYlLfe2eAkbv2Ag38ezCKkjD1+4jbyEBghebQuCymJgRU/XsI6ejx0T7KQcLPZX2w++PtHrhipPPoOaNURcms11xc/2r4XMnSC3pzZ8pMyNwENV5MfBebp3WC1CKXK8+rQq9pHhFaIH8LiKVwiLRvLINrcdK6DB1TmoYDxk7vVVofVX0Nqrk/4kv7FzNnfarklSFVbe7tKV1Uufkq1haBQuLgBXoZaxjtRAqWIhC9uDmMRB60Ab08z0lITvJrT8GKpjCNILjzc7iyQik+g==$RPi8G77HfBm2d9Hw6w1SQZHFFmg0kRzdyM0oeA3sHB0k7m5woROvfwe8kmKD8iGLR9yDT9EVgrx64D+IVBq+xpg7FOeridRtnO5yODsgeKrU/rt8PbV3/+K+bBmhoM6eT/8/mM3D7HYNAOh8hnU4jm/bRfRg4ULP57w=",
+//         encryptedExpiryYear: "adyenjs_0_1_25$JYT45iRLqVLNg0IhhZPYFAYqhbGTjgUJXpcQvmMZAhO/P/SfppEYNeZHY6ks6AX7gaxZOPft9+ot0ZjGZ5cG6FP7OyX13jFmP8NNYic7++iCa77oR2P6WwBbMzAKeydHmxJMvFlmZprv6HccSZ6VV1Y2A3G8HOMJzCjY0FfKitjRlf3GbLD7c/egqI6eIKpHp0GMZRAzxF2/KVRKDg60bw3VV/ED56lG7FO9Glds+ptP5K6g3vOagZPqNyABix9lQTrPSRVW7M4Rjwswt3RW50sh0lpSIdxwjP8XU9bG43LcJVP+Nmwb9NpReTRiLxLAeKry45fHtsCFomzmy36VnQ==$6xzZJbHs6RXnqk7r4gYYoT6M6tvvtIjTnipuNFiD7Om8ykzc6rM9tOFI5BXdzV5FZI6L838hlEbEI9jNxgO3WcIjRSuoDpE48B12MmKPgpVt5jTvRwN+vmqR7a03o1d3eHzxifHyg7T4migf7L7Mibl8sSyuCypV+LTU",
+//         encryptedSecurityCode: "adyenjs_0_1_25$VfRhjLp1axCsqwOo72/7dlKZZf+82iE1hovo1GepazbTdcqJkEO/g6g4j3EEKCeTv4uKL4rG7nV9fU478hq6cDBkRrBi36/MOdAg013HFkHfVOyd02u0/JgB9TpER1BJy3WNcEA4n0ZjPeKBDJQl2GtM4v90mCw7bsZhl21ZdowSnFyb/vfist+H0FHkMOQqxUUhI2ZnpMHAo7psGefKGOjVA+jioRwUBhStmmP9kCzqt+Uva3DtouqYNLZS+saZ6MmmXM6mHkvNYQi/qxVC+60qyEqmI4MtCqKt2noIptSvoMNxQqQ2pm6218sD37LlvEYk9J0hMeo1SVgqzjTz0Q==$280aJPJhw6GmPrlRJ+vTUl99EGByFGGjBG4CmcezMwV8HfgeCR6gTRrO2jigD4WzkFfmpmpICj82jz+nFbWrNlDvvkJSHuOpBXN4/ma1QgzZC8D58PZ547XtCpNgIunpkhN4kMfGLuSx3n7QoqMSVJGK3KiDeiAkBcTIxa+3OzZUwSHpjuWLpT0PYkFuI0kTv2u2GWSlkWmvEUZqniac6w1bL2EQ3k24fEbSDSkdtKcRM5BSWuhF5nwAvq27PXXzUYI51JrBzGwK3xoCa4pzB0AToUs6DeGess/YXEqg/Qh7E1FR1eS/DH1a46rEdeFW2efQXsYOkfHOnw7Zvecuw5RHM9H9PeymPvfbVd09wPnrHSl0dkcpzGbitX3dxnmBn/TycxyqnNvy8mcFqx5PYrGFB7Xem7I385p0My0mbLAZzBQCNAUZmPKlEE2IaM/yS9zn/GUlT6+xCQGFaejWkwDGNvJXGLabEgqMA8twBNlElonEwyx5umxS2FOhyvO3ZaMbhz4JPatmaXb8rLAN4Vuu+7wivNNH2HUt31vDFVMwy4gfwFhMdbipF37v10jzyxbphO8x5Ne301nRHTXC3q0Ynb1IaX4FRGJkX130VbMn7o/LoJP2c6tjEwaDf05Dpw==",
+//     };
+//
+//     return {
+//         amount: createAmountObject("USD", 1000),
+//         merchantAccount,
+//         paymentMethod: paymentMethodDetails,
+//         reference,
+//         returnUrl: "https://your-company.com/...",
+//         shopperReference: "shopperReference",
+//         storePaymentMethod: true
+//     };
+// }
 
 function createPaymentSessionRequest(): PaymentSetupRequest {
     return {
@@ -132,11 +132,11 @@ beforeEach((): void => {
 });
 
 describe("Checkout", (): void => {
-    test("should make a payment.", async (): Promise<void> => {
-        const paymentsRequest: PaymentRequest = createPaymentsCheckoutRequest();
-        const paymentsResponse: PaymentResponse = await checkout.payments(paymentsRequest);
-        expect(paymentsResponse.pspReference).toBeTruthy();
-    });
+    // test("should make a payment.", async (): Promise<void> => {
+    //     const paymentsRequest: PaymentRequest = createPaymentsCheckoutRequest();
+    //     const paymentsResponse: PaymentResponse = await checkout.payments(paymentsRequest);
+    //     expect(paymentsResponse.pspReference).toBeTruthy();
+    // });
 
     test("should have valid payment methods", async (): Promise<void> => {
         const paymentMethodsRequest: PaymentMethodsRequest = {merchantAccount};
