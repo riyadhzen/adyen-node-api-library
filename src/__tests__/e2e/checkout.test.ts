@@ -139,17 +139,6 @@ describe("Checkout", (): void => {
         expect(paymentsResponse.pspReference).toBeTruthy();
     });
 
-    test("should return correct Exception", async (): Promise<void> => {
-        expect.assertions(1);
-        try {
-            const paymentsRequest: PaymentRequest = createPaymentsCheckoutRequest();
-            delete paymentsRequest.merchantAccount;
-            await checkout.payments(paymentsRequest);
-        } catch (e) {
-            expect(e instanceof HttpClientException).toBeTruthy();
-        }
-    });
-
     test("should have valid payment methods", async (): Promise<void> => {
         const paymentMethodsRequest: PaymentMethodsRequest = {merchantAccount};
         const paymentMethodsResponse: PaymentMethodsResponse = await checkout.paymentMethods(paymentMethodsRequest);
@@ -206,7 +195,11 @@ describe("Checkout", (): void => {
             new Checkout(client);
             fail();
         } catch (e) {
-            expect(e.message).toEqual("Please provide your unique live url prefix on the setEnvironment() call on the Client or provide checkoutEndpoint in your config object.");
+            if(e instanceof  Error) {
+                expect(e.message).toEqual("Please provide your unique live url prefix on the setEnvironment() call on the Client or provide checkoutEndpoint in your config object.");
+            } else {
+                fail();
+            }
         }
     });
 
