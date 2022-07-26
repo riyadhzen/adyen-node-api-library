@@ -46,12 +46,18 @@ class TerminalCloudAPI extends ApiKeyAuthenticatedService {
             const reqWithAppInfo = {saleToPOIRequest};
 
             mergeDeep(request, reqWithAppInfo);
+            // SMTZ We need to keep the original acquirer data coming on from the request
+            // so that we can pass it again to adyen.
+            const originalAcquirer = request.SaleToPOIRequest.PaymentRequest.SaleData.SaleToAcquirerData;
             const formattedRequest = ObjectSerializer.serialize(request, "TerminalApiRequest");
-
-            if (formattedRequest.SaleToPOIRequest?.PaymentRequest?.SaleData?.SaleToAcquirerData) {
-                const dataString = JSON.stringify(formattedRequest.SaleToPOIRequest.PaymentRequest.SaleData.SaleToAcquirerData);
-                formattedRequest.SaleToPOIRequest.PaymentRequest.SaleData.SaleToAcquirerData = Buffer.from(dataString).toString("base64");
-            }
+            
+            // SMTZ Re-inject request sale to acquirer data cause otherwise it will be lost
+            formattedRequest.SaleToPOIRequest.PaymentRequest
+            .SaleData.SaleToAcquirerData = originalAcquirer;
+            // if (formattedRequest.SaleToPOIRequest?.PaymentRequest?.SaleData?.SaleToAcquirerData) {
+            //     const dataString = JSON.stringify(formattedRequest.SaleToPOIRequest.PaymentRequest.SaleData.SaleToAcquirerData);
+            //     formattedRequest.SaleToPOIRequest.PaymentRequest.SaleData.SaleToAcquirerData = Buffer.from(dataString).toString("base64");
+            // }
 
             return formattedRequest;
         }
