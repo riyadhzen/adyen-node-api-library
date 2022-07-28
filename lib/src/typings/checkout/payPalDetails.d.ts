@@ -1,0 +1,35 @@
+export declare class PayPalDetails {
+    /**
+    * The unique ID associated with the order.
+    */
+    'orderID'?: string;
+    /**
+    * The unique ID associated with the payer.
+    */
+    'payerID'?: string;
+    /**
+    * This is the `recurringDetailReference` returned in the response when you created the token.
+    */
+    'recurringDetailReference'?: string;
+    /**
+    * This is the `recurringDetailReference` returned in the response when you created the token.
+    */
+    'storedPaymentMethodId'?: string;
+    /**
+    * The type of flow to initiate.
+    */
+    'subtype'?: PayPalDetails.SubtypeEnum;
+    /**
+    * **paypal**
+    */
+    'type': PayPalDetails.TypeEnum;
+}
+export declare namespace PayPalDetails {
+    enum SubtypeEnum {
+        Redirect,
+        Sdk
+    }
+    enum TypeEnum {
+        Paypal
+    }
+}
